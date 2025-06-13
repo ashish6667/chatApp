@@ -21,7 +21,7 @@ function Login() {
     };
     // console.log(userInfo);
     axios
-      .post("/api/user/login", userInfo)
+      .post(https://chatapp-qrz9.onrender.com+"/api/user/login", userInfo)
       .then((response) => {
         if (response.data) {
           toast.success("Login successful");
