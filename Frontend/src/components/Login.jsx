@@ -22,16 +22,16 @@ function Login() {
     // console.log(userInfo);
     axios
       .post("/api/user/login", userInfo)
-      .then((res) => {
-        if (res.data) {
+      .then((response) => {
+        if (response.data) {
           toast.success("Login successful");
         }
-        localStorage.setItem("ChatApp", JSON.stringify(res.data));
-        setAuthUser(res.data);
+        localStorage.setItem("ChatApp", JSON.stringify(response.data));
+        setAuthUser(response.data);
       })
       .catch((error) => {
-        if (error.res) {
-          toast.error("Error: " + error.res.data.error);
+        if (error.response) {
+          toast.error("Error: " + error.response.data.error);
         }
       });
   };
