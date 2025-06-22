@@ -14,27 +14,35 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const userInfo = {
       email: data.email,
       password: data.password,
     };
-    // console.log(userInfo);
-    axios
-      .post("/api/user/login", userInfo)
-      .then((response) => {
-        if (response.data) {
-          toast.success("Login successful");
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}api/user/login`,
+        userInfo,
+        {
+          withCredentials: true, // Optional: required only if you're using cookies
         }
+      );
+
+      if (response.data) {
+        toast.success("Login successful");
         localStorage.setItem("ChatApp", JSON.stringify(response.data));
         setAuthUser(response.data);
-      })
-      .catch((error) => {
-        if (error.response) {
-          toast.error("Error: " + error.response.data.error);
-        }
-      });
+      }
+    } catch (error) {
+      if (error.response && error.response.data?.error) {
+        toast.error("Error: " + error.response.data.error);
+      } else {
+        toast.error("Login failed. Please try again.");
+      }
+    }
   };
+
   return (
     <>
       <div className="flex h-screen items-center justify-center">
@@ -71,6 +79,7 @@ function Login() {
               This field is required
             </span>
           )}
+
           {/* Password */}
           <label className="input input-bordered flex items-center gap-2">
             <svg
@@ -88,7 +97,7 @@ function Login() {
             <input
               type="password"
               className="grow"
-              placeholder="password"
+              placeholder="Password"
               {...register("password", { required: true })}
             />
           </label>
@@ -97,6 +106,7 @@ function Login() {
               This field is required
             </span>
           )}
+
           {/* Text & Button */}
           <div className="flex justify-between">
             <p>
