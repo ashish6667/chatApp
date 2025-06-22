@@ -10,11 +10,29 @@ import { app, server } from "./SocketIO/server.js";
 
 dotenv.config();
 
-// middleware
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3001",
+      "https://chat-app-frontend.vercel.app" // add your frontend domain here
+    ],
+    credentials: true,
+  })
+);
 
+// Test route to fix "Cannot GET /"
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
+});
+
+// Routes
+app.use("/api/user", userRoute);
+app.use("/api/message", messageRoute);
+
+// Database connection
 const PORT = process.env.PORT || 4001;
 const URI = process.env.MONGODB_URI;
 
@@ -25,10 +43,7 @@ try {
   console.log(error);
 }
 
-//routes
-app.use("/api/user", userRoute);
-app.use("/api/message", messageRoute);
-
+// Start server
 server.listen(PORT, () => {
   console.log(`Server is Running on port ${PORT}`);
 });
