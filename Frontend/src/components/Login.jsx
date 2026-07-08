@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
 function Login()  {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [authUser, setAuthUser] = useAuth();
   const {
     register,
@@ -20,7 +21,7 @@ function Login()  {
     };
     //console.log(userInfo);
     axios
-      .post(API_BASE_URL+"/user/login", userInfo)
+      .post(API_BASE_URL+"/user/login", userInfo, { withCredentials: true })
       .then((response) => {
         console.log(response.data);
         if (response.data) {

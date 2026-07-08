@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Cookies from "js-cookie";
 import axios from "axios";
 
 function useGetAllUsers() {
@@ -12,21 +11,18 @@ function useGetAllUsers() {
     const getUsers = async () => {
       setLoading(true);
       try {
-        const token = Cookies.get("jwt");
-        const response = await axios.get(API_BASE_URL+"/user/allusers", {
-          credentials: "include",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const response = await axios.get(`${API_BASE_URL}/user/allusers`, {
+          withCredentials: true,
         });
         setAllUsers(response.data);
-        setLoading(false);
       } catch (error) {
         console.log("Error in useGetAllUsers :" + error);
+      } finally {
+        setLoading(false);
       }
     };
     getUsers();
-  }, []);
+  }, [API_BASE_URL]);
 
   return [allUsers, loading];
 }

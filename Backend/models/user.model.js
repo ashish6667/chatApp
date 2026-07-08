@@ -18,6 +18,10 @@ const userSchema = mongoose.Schema(
     confirmPassword: {
       type: String,
     },
+    avatar: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 ); // createdAt & updatedAt

@@ -4,11 +4,11 @@ const createTokenAndSaveCookie=(userId,res)=>{
     const token = jwt.sign({ userId }, process.env.JWT_TOKEN,{
         expiresIn: "10d",
     });
-    res.cookie("jwt",token,{
-        httpOnly: true, // xss
-        secure:true,
-        sameSite:"strict" // csrf
-
+    const isProduction = process.env.NODE_ENV === "production";
+    res.cookie("jwt", token, {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     });
 };
 

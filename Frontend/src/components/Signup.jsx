@@ -33,7 +33,7 @@ const Signup = () => {
     };
     //console.log(userInfo);
     await axios
-      .post(API_BASE_URL+"/user/signup", userInfo)
+      .post(API_BASE_URL+"/user/signup", userInfo, { withCredentials: true })
       .then((response) => {
         if (response.data) {
           toast.success("Signup successful");

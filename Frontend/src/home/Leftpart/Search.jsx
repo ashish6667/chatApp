@@ -14,7 +14,7 @@ function Search() {
     if (!search) return;
 
     const conversation = allUsers.find((user) =>
-      user.fullname?.toLowerCase().includes(search.toLowerCase())
+      (user.fullname || user.name || user.email)?.toLowerCase().includes(search.toLowerCase())
     );
     if (conversation) {
       setSelectedConversation(conversation);

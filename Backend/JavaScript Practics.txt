@@ -1,0 +1,39 @@
+// Temporal Dead Zone 
+
+console.log(a)
+
+let a = 12;
+
+2. // hiosting
+
+var a = undefined;
+
+// hoisting -> ek variable ko jab  js mein banate hai to wo variable do hisso mein toot
+// jaata hai, ek declaration aur ek initialization
+// declaration -> var a;
+// initialization -> a = 12;
+
+ a = 12;
+
+
+
+3.  // Data Types
+// primitive -> number, string, Boolean, null, undefined, symbol
+// reference -> object, array, function
+// [] {} ()
+
+
+//let a = 12;
+//let b = a;
+//a = a + 2;
+
+ 4. // type coercion
+"5" + 1;
+"5" - 1;
+"5" * 2;
+"5" / 2;
+
+5. // Truthy vs Falsy values in JavaScript
+
+// 0 false "" null undefined NaN document.all
+// rest all -> true

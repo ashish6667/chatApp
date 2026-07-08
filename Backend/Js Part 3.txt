@@ -1,0 +1,10 @@
+// scope hai ke aap apne  created variables and 
+// functions kaha tak access kar sakte ho
+
+
+
+// function scope - function ke  andar hi  use kar sakte ho
+// global scope - pura program me kahi bhi use kar sakte ho
+// block scope - {} ke andar hi use kar sakte ho
+
+// agar aapka code kisi bhi {} ke andar nhi hai to wo global scope me hai

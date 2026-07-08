@@ -4,12 +4,13 @@ import Right from "./home/Rightpart/Right";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import { useAuth } from "./context/AuthProvider";
-import  { Toaster } from 'react-hot-toast';
-
+import { Toaster } from 'react-hot-toast';
 import { Navigate, Route, Routes } from "react-router-dom";
+import useGetSocketMessage from "./context/useGetSocketMessage.js";
 
 function App() {
   const [authUser, setAuthUser] = useAuth();
+  useGetSocketMessage();
   console.log(authUser);
   return (
     <>

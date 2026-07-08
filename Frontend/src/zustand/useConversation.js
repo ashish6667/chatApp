@@ -6,5 +6,12 @@ const useConversation = create((set) => ({
     set({ selectedConversation }),
   messages: [],
   setMessage: (messages) => set({ messages }),
+  unreadMessages: {},
+  setUnreadMessages: (unreadMessages) => set({ unreadMessages }),
+  clearUnreadMessages: (senderId) => set((state) => {
+    const updated = { ...state.unreadMessages };
+    delete updated[senderId];
+    return { unreadMessages: updated };
+  }),
 }));
 export default useConversation;

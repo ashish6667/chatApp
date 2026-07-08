@@ -1,6 +1,7 @@
 import React from "react";
 import useConversation from "../../zustand/useConversation.js";
 import { useSocketContext } from "../../context/SocketContext.jsx";
+import { defaultAvatar } from "../../components/ProfileModal";
 
 function Chatuser() {
   const { selectedConversation } = useConversation();
@@ -11,29 +12,29 @@ function Chatuser() {
     return onlineUsers.includes(userId) ? "online" : "offline";
   };
 
+  const isUserOnline = getOnlineUsersStatus(selectedConversation?._id) === "online";
+
   return (
     <div className="flex space-x-3 items-center justify-center w-full bg-gray-800 hover:bg-gray-700 duration-300 ">
       <div className="relative">
-        <div className="avatar online">
+        <div className={`avatar ${isUserOnline ? "online" : ""}`}>
           <div className="w-12 rounded-full ">
             <img
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+              src={selectedConversation?.avatar || defaultAvatar}
               className="rounded-full"
             />
           </div>
         </div>
         {/* Online/Offline Indicator */}
         <span
-          className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${
-            getOnlineUsersStatus(selectedConversation?._id) === "online"
-              ? "bg-green-500"
-              : "bg-gray-500"
+          className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-gray-800 ${
+            isUserOnline ? "bg-green-500" : "bg-gray-500"
           }`}
         ></span>
       </div>
       <div>
         <h1 className="text-xl">
-          {selectedConversation?.fullname || "Unknown User"}
+          {selectedConversation?.fullname || selectedConversation?.name || "Unknown User"}
         </h1>
         <span className="text-sm">
           {getOnlineUsersStatus(selectedConversation?._id)}

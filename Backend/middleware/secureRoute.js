@@ -3,7 +3,9 @@ import User from "../models/user.model.js";
 
 const secureRoute = async (req, res, next) => {
   try {
-    const token = req.cookies?.jwt; // optional chaining for safety
+    const token =
+      req.cookies?.jwt ||
+      req.headers.authorization?.split(" ")[1];
 
     if (!token) {
       return res.status(401).json({ error: "Access denied. No token provided." });

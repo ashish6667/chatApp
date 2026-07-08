@@ -2,11 +2,12 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import createTokenAndSaveCookie from "../jwt/genrateToken.js";
 
+// SignUp Controller
 export const signup = async (req, res) => {
   const { fullname, email, password, confirmPassword } = req.body;
   try {
     if (password !== confirmPassword) {
-      return res.status(400).json({ error: "Password do not match" });
+      return res.status(400).json({ error: "Passwords do not match" });
     }
 
     const user = await User.findOne({ email });
@@ -32,6 +33,7 @@ export const signup = async (req, res) => {
           _id: newUser._id,
           fullname: newUser.fullname,
           email: newUser.email,
+          avatar: newUser.avatar,
         },
       });
     }
@@ -41,6 +43,7 @@ export const signup = async (req, res) => {
   }
 };
 
+// Login Controller
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -61,6 +64,7 @@ export const login = async (req, res) => {
         _id: user._id,
         fullname: user.fullname,
         email: user.email,
+        avatar: user.avatar,
       },
     });
   } catch (error) {
@@ -69,6 +73,7 @@ export const login = async (req, res) => {
   }
 };
 
+// Logout Controller
 export const logout = async (req, res) => {
   try {
     res.clearCookie("jwt");
@@ -79,6 +84,7 @@ export const logout = async (req, res) => {
   }
 };
 
+// Get All Users (excluding the logged-in user)
 export const allUsers = async (req, res) => {
   try {
     const loggedInUser = req.user._id;
@@ -86,6 +92,74 @@ export const allUsers = async (req, res) => {
     res.status(200).json(filteredUsers);
   } catch (error) {
     console.log("Error in allUsers Controller:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Update Avatar Controller
+export const updateAvatar = async (req, res) => {
+  try {
+    const { avatar } = req.body;
+    if (!avatar) {
+      return res.status(400).json({ error: "Avatar data is required" });
+    }
+
+    // Restrict size (max ~2MB of base64 text length is around 2.8M characters)
+    if (avatar.length > 2.8 * 1024 * 1024) {
+      return res.status(400).json({ error: "Image size should be less than 2MB" });
+    }
+
+    const userId = req.user._id;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { avatar },
+      { new: true }
+    ).select("-password");
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Avatar updated successfully",
+      user: {
+        _id: updatedUser._id,
+        fullname: updatedUser.fullname,
+        email: updatedUser.email,
+        avatar: updatedUser.avatar,
+      },
+    });
+  } catch (error) {
+    console.log("Error in updateAvatar Controller:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Delete Avatar Controller
+export const deleteAvatar = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { avatar: "" },
+      { new: true }
+    ).select("-password");
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Avatar removed successfully",
+      user: {
+        _id: updatedUser._id,
+        fullname: updatedUser.fullname,
+        email: updatedUser.email,
+        avatar: updatedUser.avatar,
+      },
+    });
+  } catch (error) {
+    console.log("Error in deleteAvatar Controller:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

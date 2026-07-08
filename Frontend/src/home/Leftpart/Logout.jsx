@@ -11,7 +11,9 @@ function Logout() {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      const res = await axios.post(API_BASE_URL+"/user/logout");
+      const res = await axios.post(`${API_BASE_URL}/user/logout`, {}, {
+        withCredentials: true,
+      });
       localStorage.removeItem("ChatApp");
       Cookies.remove("jwt");
       setLoading(false);
@@ -23,12 +25,11 @@ function Logout() {
     }
   };
   return (
-    <div className="flex justify-start items-center pl-5">
-      <BiLogOutCircle
-        className="text-5xl text-white  hover:bg-slate-700 duration-300 cursor-pointer rounded-full p-2 "
-        onClick={handleLogout}
-      />
-    </div>
+    <BiLogOutCircle
+      className="text-5xl text-white hover:bg-slate-700 duration-300 cursor-pointer rounded-full p-2"
+      onClick={handleLogout}
+      title="Logout"
+    />
   );
 }
 

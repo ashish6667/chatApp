@@ -11,7 +11,8 @@ const useSendMessage = () => {
     try {
       const res = await axios.post(
         `${API_BASE_URL}/message/send/${selectedConversation._id}`,
-        { message }
+        { message },
+        { withCredentials: true }
       );
       setMessage([...messages, res.data]);
       setLoading(false);

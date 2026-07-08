@@ -16,7 +16,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser) {
-      const socket = io("https://chatapp-3-11it.onrender.com", {
+      const socket = io(import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL.replace("/api", "") : "https://chatapp-3-11it.onrender.com", {
         query: {
           userId: authUser.user._id,
         },
