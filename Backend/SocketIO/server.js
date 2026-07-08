@@ -5,17 +5,6 @@ let io;
 
 const users = {};
 
-// ✅ Dynamic CORS in Socket.IO
-const allowedOrigins = [
-  "https://chat-app-frontend-mu-teal.vercel.app",
-  "http://localhost:5173",
-  "http://localhost:3000",
-  "http://localhost:3001",
-  "http://127.0.0.1:5173",
-  "http://127.0.0.1:3000",
-  "http://127.0.0.1:3001",
-];
-
 export const getReceiverSocketId = (receiverId) => users[receiverId];
 
 export const initSocket = (app) => {
@@ -24,7 +13,18 @@ export const initSocket = (app) => {
   io = new Server(server, {
     cors: {
       origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
+        const socketAllowedOrigins = [
+          process.env.FRONTEND_URL,
+          "https://chat-app-frontend-mu-teal.vercel.app",
+          "http://localhost:5173",
+          "http://localhost:3000",
+          "http://localhost:3001",
+          "http://127.0.0.1:5173",
+          "http://127.0.0.1:3000",
+          "http://127.0.0.1:3001",
+        ].filter(Boolean);
+
+        if (!origin || socketAllowedOrigins.includes(origin)) {
           callback(null, true);
         } else {
           callback(new Error("Not allowed by CORS (Socket.IO)"));
