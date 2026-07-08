@@ -13,6 +13,7 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
+  process.env.FRONTEND_URL,
   "https://chat-app-frontend-mu-teal.vercel.app",
   "https://chat-app-frontend-atrb0iel3-ashish6667s-projects.vercel.app",
   "http://localhost:5173",
@@ -21,7 +22,7 @@ const allowedOrigins = [
   "http://127.0.0.1:5173",
   "http://127.0.0.1:3000",
   "http://127.0.0.1:3001",
-];
+].filter(Boolean);
 
 app.use(
   cors({
